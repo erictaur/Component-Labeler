@@ -3,13 +3,13 @@ sh mkdir -p Netlist
 sh mkdir -p Report
 
 # Import Design
-set DESIGN "ipdc"
+set DESIGN "CLE"
 
-read_file -format verilog  "../01_RTL/$DESIGN.v"
+read_file -format verilog  "./$DESIGN.v"
 current_design [get_designs $DESIGN]
 link
 
-source -echo -verbose ./ipdc_dc.sdc
+source -echo -verbose ./CLE_DC.sdc
 set_max_area 0
 # Compile Design
 current_design [get_designs ${DESIGN}]
@@ -20,10 +20,10 @@ check_timing > Report/check_timing.txt
 
 uniquify
 set_fix_multiple_port_nets -all -buffer_constants [get_designs *]
-# compile
-compile_ultra
-optimize_netlist -area
-compile_ultra -retime -inc
+compile
+#compile_ultra
+#optimize_netlist -area
+#compile_ultra -retime -inc
 
 # Report Output
 current_design [get_designs ${DESIGN}]
